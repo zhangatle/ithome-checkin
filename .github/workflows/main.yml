@@ -1,0 +1,23 @@
+name: IT之家签到
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: "30 14 * * *"
+    watch:
+        types: [started]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout actions
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    - name: "开始签到"
+      run: |
+        python ithome.py
+      env:
+        USERNAME: ${{secrets.USERNAME}}
+        PASSWORD: ${{secrets.PASSWORD}}
