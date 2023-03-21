@@ -39,19 +39,6 @@ def des_encrypt2(s, key):
     return binascii.b2a_hex(en).decode()
 
 
-def cn(x):
-    return x.decode("u8")
-
-
-def getNowTime13():
-    return str(int(round(time.time() * 1000)))
-
-
-def getNowTime132(dtime):
-    print((str(int(time.mktime(dtime.timetuple()) * 1000))))
-    return str(int(time.mktime(dtime.timetuple()) * 1000))
-
-
 def getTime(dtime):
     return int(time.mktime(dtime.timetuple())) * 1000
 
@@ -109,14 +96,6 @@ def geKK2(_0x249526, _0x2fce26):
         return None
 
 
-def gneKK(_0x4060f6):
-    return 'k' + des_encrypt2(geKK(_0x4060f6, 3), geKK(_0x4060f6, 8))
-
-
-def geKsK(_0x101b3e):
-    return des_encrypt2(_0x101b3e.strftime('%Y-%m-%d %H:%M:%S'), geKK(_0x101b3e, 8))
-
-
 def gneKK2(_0x4060f6):
     return 'k' + des_encrypt2(geKK2(_0x4060f6, 3), geKK2(_0x4060f6, 8))
 
@@ -127,7 +106,7 @@ def geKsK2(_0x101b3e):
 
 
 def getSign():
-    now = int(time.time() * 1000)
+    now = int(time.time() * 1000 + 8 * 60 * 60 * 1000)
     return "&timestamp=" + str(now) + "&" + gneKK2(now) + "=" + geKsK2(now)
 
 
@@ -149,8 +128,6 @@ def run(username, password):
         response = requests.post(url=url_login, data=json.dumps(data), headers=header).headers['Set-Cookie']
         user_hash = re.search(r'user=hash=[a-zA-Z0-9]{160,160}', response).group()[10:]
         # 云函数时间可能早8个小时，应该使用下面时间
-        time =  (datetime.datetime.now() + datetime.timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')
-        # time = current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         endt = getSign()
         session = requests.session()
         session.verify = False
