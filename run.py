@@ -5,6 +5,7 @@ import datetime
 import time
 from pyDes import des, ECB
 import binascii
+from datetime import timezone, timedelta
 
 requests.packages.urllib3.disable_warnings()
 
@@ -39,14 +40,6 @@ def des_encrypt2(s, key):
     return binascii.b2a_hex(en).decode()
 
 
-def getTime(dtime):
-    return int(time.mktime(dtime.timetuple())) * 1000
-
-
-def getDate(dtime):
-    return dtime.day
-
-
 def getDate2(dtime):
     dtime = datetime.datetime.fromtimestamp(dtime / 1000)
     return dtime.day
@@ -54,26 +47,6 @@ def getDate2(dtime):
 
 def parseInt(data):
     return int(data)
-
-
-def geKK(_0x249526, _0x2fce26):
-    _0x17c13c = "hd7%b4f8p9)*fd4h5l6|)123/*-+!#$@%^*()_+?>?njidfds[]rfbcvnb3rz/ird|opqqyh487874515/%90hggigadfihklhkopjj`b3hsdfdsf84215456fi15451%q(#@Fzd795hn^Ccl$vK^L%#w$^yr%ETvX#0TaPSRm5)OeG)^fQnn6^%^UTtJI#3EZ@p6^Rf$^!O$(jnkOiBjn3#inhOQQ!aTX8R)9O%#o3zCVxo3tLyVorwYwA^$%^b9Yy$opSEAOOlFBsS^5d^HoF%tJ$dx%3)^q^c^$al%b4I)QHq^#^AlcK^KZFYf81#bL$n@$%j^H(%m^"
-    _0x5c548d = getTime(_0x249526)  # 时间戳
-    _0x5c59ee = getDate(_0x249526)  # 当月第几日
-    _0x5c548d = round(_0x5c548d / 0xc350) * _0x5c59ee * 0x3
-    if (_0x2fce26 == 3):
-        return _0x17c13c[parseInt(_0x5c548d % 0x2710 / 0x3e8) * _0x5c59ee] + _0x17c13c[
-            parseInt(_0x5c548d % 0x3e8 / 0x64) * _0x5c59ee] + _0x17c13c[parseInt(_0x5c548d % 0x64 / 0xa) * _0x5c59ee];
-    elif (_0x2fce26 == 8):
-        return _0x17c13c[parseInt(_0x5c548d % 0x5f5e100 / 0x989680) * _0x5c59ee] + _0x17c13c[
-            parseInt(_0x5c548d % 0x989680 / 0xf4240) * _0x5c59ee] + _0x17c13c[
-            parseInt(_0x5c548d % 0xf4240 / 0x186a0) * _0x5c59ee] + _0x17c13c[
-            parseInt(_0x5c548d % 0x186a0 / 0x2710) * _0x5c59ee] + _0x17c13c[
-            parseInt(_0x5c548d % 0x2710 / 0x3e8) * _0x5c59ee] + _0x17c13c[
-            parseInt(_0x5c548d % 0x3e8 / 0x64) * _0x5c59ee] + _0x17c13c[
-            parseInt(_0x5c548d % 0x64 / 0xa) * _0x5c59ee] + _0x17c13c[parseInt(_0x5c548d % 0xa) * _0x5c59ee];
-    else:
-        return None
 
 
 def geKK2(_0x249526, _0x2fce26):
@@ -101,12 +74,12 @@ def gneKK2(_0x4060f6):
 
 
 def geKsK2(_0x101b3e):
-    return des_encrypt2(datetime.datetime.fromtimestamp(_0x101b3e / 1000).strftime('%Y-%m-%d %H:%M:%S'),
+    return des_encrypt2(datetime.datetime.fromtimestamp(_0x101b3e / 1000, tz=timezone(timedelta(hours=8))).strftime('%Y-%m-%d %H:%M:%S'),
                         geKK2(_0x101b3e, 8))
 
 
 def getSign():
-    now = int(time.time() * 1000 + 8 * 60 * 60 * 1000)
+    now = int(time.time()*1000)
     return "&timestamp=" + str(now) + "&" + gneKK2(now) + "=" + geKsK2(now)
 
 
