@@ -84,7 +84,7 @@ def getSign():
 
 
 def run(username, password):
-    qiandaocode = [0, 1, 2, 3, 256, 257, 258, 259, 512, 513, 514, 515, 768, 769, 770, 771]
+    qiandaocode = [0]
     url_login = 'https://my.ruanmei.com/Default.aspx/LoginUser'
     data = {'mail': username, 'psw': password, 'rememberme': 'true'}
     header = {
